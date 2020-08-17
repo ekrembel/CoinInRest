@@ -16,7 +16,7 @@ namespace CoinInRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowOrigin")]
+    
     public class BoughtController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -29,7 +29,7 @@ namespace CoinInRest.Controllers
         }
 
         [HttpGet]
-        
+        [EnableCors]
         public ActionResult GetShareDetails()
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;
