@@ -36,12 +36,20 @@ namespace CoinInRest.Controllers
 
             string userId = User.Claims.First(c => c.Type == "Id").Value;
             var user = await userManager.FindByIdAsync(userId);
-            return new
+            if (user != null)
             {
-                user.UserName,
-                user.Email,
-                user.Fund
-            };
+                return new
+                {
+                    user.UserName,
+                    user.Email,
+                    user.Fund
+                };
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         [HttpPost]
