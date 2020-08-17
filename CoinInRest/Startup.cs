@@ -34,9 +34,8 @@ namespace CoinInRest
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200")
-                                      .AllowAnyHeader()
-                                                  .AllowAnyMethod();
+                                      builder.WithOrigins("http://example.com",
+                                                          "http://www.contoso.com");
                                   });
             });
 
@@ -96,7 +95,12 @@ namespace CoinInRest
 
 
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(builder =>
+            builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
+
 
 
             app.UseHttpsRedirection();
