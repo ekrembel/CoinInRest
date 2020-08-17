@@ -15,6 +15,7 @@ namespace CoinInRest
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +28,16 @@ namespace CoinInRest
         {
             var appSettingsSection = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(appSettingsSection);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200");
+                                  });
+            });
+
 
             services.AddControllers();
 
@@ -83,13 +94,7 @@ namespace CoinInRest
 
 
 
-            app.UseCors(builder =>
-            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-
-            );
-
+            app.UseCors(MyAllowSpecificOrigins);
 
 
             app.UseHttpsRedirection();
