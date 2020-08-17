@@ -35,7 +35,7 @@ namespace CoinInRest.Controllers
         {
             List<Company> companies = db.Companies.OrderBy(c => c.Symbol).ToList();
 
-            if (companies.Count > 0)
+            if (companies != null)
             {
                 return Ok(companies);
             }
