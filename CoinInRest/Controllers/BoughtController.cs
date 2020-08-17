@@ -15,7 +15,6 @@ namespace CoinInRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class BoughtController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;

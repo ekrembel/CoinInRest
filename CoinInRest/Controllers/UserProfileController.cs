@@ -30,7 +30,6 @@ namespace CoinInRest.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<Object> GetUserProfile()
         {
 

@@ -15,7 +15,6 @@ namespace CoinInRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class TransactionController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
