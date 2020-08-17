@@ -41,7 +41,7 @@ namespace CoinInRest.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<Object> CreateAccount(UserModel model)
+        public async Task<ActionResult> CreateAccount(UserModel model)
         {
             if (model != null)
             {
@@ -68,29 +68,37 @@ namespace CoinInRest.Controllers
         // Post: /api/User/Login
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var user = await userManager.FindByNameAsync(model.UserName);
-
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            if (model == null)
             {
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                       new Claim("Id", user.Id.ToString()),
-                       new Claim("Username", user.UserName)
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
+                return BadRequest();
             }
             else
             {
-                return BadRequest(new { message = "Username or password is incorrect!" });
+                var user = await userManager.FindByNameAsync(model.UserName);
+
+                if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                       new Claim("Id", user.Id.ToString()),
+                       new Claim("Username", user.UserName)
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return Ok(new { token });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Username or password is incorrect!" });
+                }
             }
+            
         }
 
 

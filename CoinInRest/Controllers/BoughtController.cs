@@ -29,18 +29,18 @@ namespace CoinInRest.Controllers
         }
 
         [HttpGet]
-        [EnableCors]
-        public ActionResult GetShareDetails()
+        public ActionResult<Bought> GetShareDetails()
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;
             List<Bought> boughts = db.Boughts.Where(b => b.AspNetUserId == userId).Where(b => b.IsOwned == true).ToList();
-            if (boughts.Count() > 0)
+            if (boughts == null)
             {
-                return Ok(boughts);
+                return NotFound();
             }
             else
             {
-                return BadRequest(new { message = "You have no shares!" });
+                return Ok(boughts);
+                
             }
 
         }
