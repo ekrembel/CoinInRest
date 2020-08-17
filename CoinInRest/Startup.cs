@@ -31,10 +31,10 @@ namespace CoinInRest
 
             services.AddCors(options =>
             {
-            options.AddPolicy("AllowOrigin",
+                options.AddPolicy("AllowOrigin",
                               builder =>
                               {
-                                  builder.WithOrigins("http://localhost:4200")
+                                  builder.AllowAnyOrigin()
                                   .AllowAnyMethod()
                                   .AllowAnyHeader();
                               });
@@ -51,7 +51,7 @@ namespace CoinInRest
                 .AddEntityFrameworkStores<CoinDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddCors();
+            
 
             var appSettings = appSettingsSection.Get<ApplicationSettings>();
 
@@ -95,7 +95,7 @@ namespace CoinInRest
 
 
 
-            app.UseCors();
+            app.UseCors("AllowOrigin");
 
 
 
