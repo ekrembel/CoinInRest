@@ -16,7 +16,7 @@ namespace CoinInRest.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowOrigin")]
+    [EnableCors]
     public class UserProfileController : ControllerBase
     {
 

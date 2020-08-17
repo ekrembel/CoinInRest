@@ -15,7 +15,6 @@ namespace CoinInRest
 {
     public class Startup
     {
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,17 +28,6 @@ namespace CoinInRest
             var appSettingsSection = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(appSettingsSection);
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin",
-                              builder =>
-                              {
-                                  builder.AllowAnyOrigin()
-                                  .AllowAnyMethod()
-                                  .AllowAnyHeader();
-                              });
-            });
-
             services.AddControllers();
 
             services.AddHttpClient();
@@ -51,7 +39,7 @@ namespace CoinInRest
                 .AddEntityFrameworkStores<CoinDbContext>()
                 .AddDefaultTokenProviders();
 
-            
+            services.AddCors();
 
             var appSettings = appSettingsSection.Get<ApplicationSettings>();
 
@@ -60,8 +48,8 @@ namespace CoinInRest
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                //x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x => {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = false;
@@ -95,7 +83,12 @@ namespace CoinInRest
 
 
 
-            app.UseCors("AllowOrigin");
+            app.UseCors(builder =>
+            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+
+            );
 
 
 
