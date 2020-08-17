@@ -1,0 +1,52 @@
+
+
+
+<div class="wrapper">
+    <div class="wrapped-div">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">             
+                <form [formGroup]="service.buyModel" style="margin-top: 20px;" (submit)="onBuy()">
+                    <div class="form-group">
+                        <label>Symbol</label>
+                        <input class="form-control" formControlName="Symbol" />
+                        <span class="text-danger" *ngIf="service.buyModel.get('Symbol').touched && service.buyModel.get('Symbol').errors?.required"><small>Please enter the symbol of the company.</small></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Shares</label>
+                        <input class="form-control" type="number" formControlName="Share" />
+                        <span class="text-danger" *ngIf="service.buyModel.get('Share').touched && service.buyModel.get('Share').errors?.required"><small>Please enter the number of share you would like to buy.</small></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8 offset-md-2">
+                            <button class="btn btn-block" type="submit" [disabled]="!service.buyModel.valid" >Buy</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div style="margin-top: 50px;">
+        <table class="box-shadow text-center" >
+            <tr>
+                <th>Symbol</th>
+                <th>Company</th>
+                <th>Price</th>
+            </tr>
+            <tr>
+                <td>{{Symbol}}</td>
+                <td>{{Company}}</td>
+                <td>${{Price | number: '1.2-2'}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+

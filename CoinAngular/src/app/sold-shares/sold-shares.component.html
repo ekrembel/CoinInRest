@@ -1,0 +1,43 @@
+<h1 class="display-4">Sold Shares</h1>
+
+<table class="box-shadow">
+    <tr>
+        <th>Symbol</th>
+        <th>Company</th>
+        <th>Date-Time</th>
+        <th>Share</th>
+        <th>Cost</th>
+        <th>Earn</th>
+        <th>Profit</th>
+    </tr>
+    <tr *ngFor="let share of mySoldShares">
+        <td>{{share.symbol}}</td>
+        <td>{{share.companyName}}</td>
+        <td>{{share.dateAndTime | date }}</td>
+        <td>{{share.numOfShare}}</td>
+        <td>${{share.cost | number: '1.2-2'}}</td>
+        <td>${{share.latestPrice | number: '1.2-2'}}</td>
+        <td class="text-danger" *ngIf="0 > share.profit">{{share.profit | currency: 'USD': 'symbol': '1.2-2'}}</td>
+        <td class="text-success" *ngIf="share.profit > 0">{{share.profit | currency: 'USD': 'symbol': '1.2-2'}}</td>
+        <td *ngIf="share.profit == 0">{{share.profit | currency: 'USD': 'symbol': '1.2-2'}}</td>
+    </tr>
+
+    <tr>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+        <td>---</td>
+    </tr>
+    <tr>
+        <th>Total Profit</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td [ngStyle]="{'color': colorValue}">{{totalProfit | currency: 'USD': 'symbol': '1.2-2'}}</td>
+    </tr>
+</table>

@@ -1,0 +1,134 @@
+
+<div class="text-center" style="margin: auto; margin-bottom: 40px;">
+    <form class="form-inline my-2 my-lg-0" [formGroup]="service.companyModel" (submit)="onSearch(name)">
+        <input class="form-control mr-sm-2 search" type="search" formControlName="Name" placeholder="Search by company name" required/>
+        <input class="btn btn-outline-danger my-2 my-sm-0" type="submit" [disabled]="!service.companyModel.valid" value="Search"/>
+    </form>
+</div>
+
+<div class="wrapper">
+    <div class="wrapped-div">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">             
+                <form [formGroup]="service.symbolModel" style="margin-top: 20px;" autocomplete="off" (submit)="onSubmit(symbol)">
+                    <div class="form-group">
+                        <label>Symbol</label>
+                        <input class="form-control" formControlName="Symbol"  required />
+
+                        <span class="text-danger" *ngIf="service.symbolModel.get('Symbol').touched && service.symbolModel.get('Symbol').errors?.required"><small>Please enter a symbol.</small></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8 offset-md-2">
+                            <button class="btn btn-block" type="submit" [disabled]="!service.symbolModel.valid" >Quote</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="text-center"  >
+        
+    <div class="" style="margin-top: 30px;">
+        <form (submit)="onLoad()">
+            <div>
+                <input type="submit" class="btn btn-outline-danger" value="Symbol List" >
+            </div>
+        </form>
+    </div> 
+</div> 
+
+
+
+<div *ngIf="companies" class="container text-center">
+    <table class="box-shadow" style="width: 70%; margin: auto;">
+        <tr>
+            <th>Symbol</th>
+            <th>Company</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let company of companies; let i = index;">
+            <td>{{company.symbol}}</td>
+            <td>{{company.name}}</td>
+            <td>
+                <input hidden #symbol value="{{company.symbol}}" >
+                <button class="btn btn-outline-danger" (click)="onClick(symbol.value)" >Quote</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="add" *ngIf="addCompany" class="wrapper">
+    <div class="wrapped-div">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">             
+                <form [formGroup]="service.addCompanyModel" style="margin-top: 20px;" (submit)="onAdd()">
+                    <div class="form-group">
+                        <label>Symbol</label>
+                        <input class="form-control" formControlName="Symbol" />
+                        <span class="text-danger" *ngIf="service.addCompanyModel.get('Symbol').touched && service.addCompanyModel.get('Symbol').errors?.required"><small>Please enter the symbol of the company.</small></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" formControlName="Name" />
+                        <span class="text-danger" *ngIf="service.addCompanyModel.get('Name').touched && service.addCompanyModel.get('Name').errors?.required"><small>Please enter the name of the company.</small></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8 offset-md-2">
+                            <button class="btn btn-block" type="submit" [disabled]="!service.addCompanyModel.valid" >Add</button>
+                            <button class="btn btn-block"  type="submit" (click)="onCancel()" >Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="spinnerCompanyList" class="d-flex justify-content-center">
+    <div class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div *ngIf="companyList" class="container">
+    <div class="text-center">
+        <div>
+            <h1 class="display-4">Companies</h1>
+        
+        </div>
+        <div style="padding-bottom: 30px;">
+            <div style="padding-bottom: 20px;">
+                <small>Is our list missing a company?</small>
+            </div>
+            <div>
+                <a fragment="add"  class="btn btn-outline-danger" (click)="onDisplay()" >Add Company</a>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="box-shadow text-center" style="width: 70%; margin: auto;">
+        <tr>
+            <th>Symbol</th>
+            <th>Company</th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let company of companyList; let i = index;">
+            <td>{{company.symbol}}</td>
+            <td>{{company.name}}</td>
+            <!-- <td>
+                <a class="btn btn-outline-success" (click)="onClick($event)" routerLink="/buy" [queryParams]="{'s': company.name}">Quote</a>
+            </td> -->
+            <td>
+                <input hidden #symbol value="{{company.symbol}}" >
+                <button class="btn btn-outline-danger" (click)="onClick(symbol.value)" >Quote</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+

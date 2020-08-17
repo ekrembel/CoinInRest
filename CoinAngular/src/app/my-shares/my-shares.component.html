@@ -1,0 +1,80 @@
+
+<div id="check" class="container" *ngIf='userDetails'>
+    <table  class="box-shadow fund">
+        <tr style="background-color: white;">
+            <th>Total Fund:</th>
+            <th>${{userDetails.fund | number: '1.2-2'}}</th>
+        </tr>
+        <tr>
+            <th>Total Cash Available:</th>
+            <th>${{userDetails.fund - totalCost | number: '1.2-2'}}</th>
+        </tr>
+    </table>
+</div>
+
+<div style="margin-top: 20px;" *ngIf="checkedShare">
+    <table class="box-shadow text-center">
+        <tr style="background-color: #ffe680;">
+            <th>Symbol</th>
+            <th>Company</th>
+            <th>Price</th>
+            <th>Price Change</th>
+        </tr>
+        <tr [ngStyle]="{'color': colorValue}">
+            <td>{{checkedShare.symbol}}</td>
+            <td>{{checkedShare.companyName}}</td>
+            <td>${{checkedShare.latestPrice | number: '1.2-2'}}</td>
+            <th>
+                <span *ngIf="colorValue == 'green'">↑</span> 
+                <span *ngIf="colorValue == 'red'">↓</span> 
+                <span *ngIf="colorValue != 'green' && colorValue != 'red'">→</span>
+            </th>
+        </tr>
+    </table>
+</div>
+<div *ngIf="spinnerCheck" class="d-flex justify-content-center">
+    <div class="spinner-border text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<hr>
+<table class="box-shadow text-center" *ngIf="shares; else noSharesBlock">
+    <tr id="check">
+        <th>Symbol</th>
+        <th>Company</th>
+        <th>Share</th>
+        <th>Share Price</th>
+        <th>Total Cost</th>
+        <th>Current Value</th>
+        <th>Sell</th>
+    </tr>
+    <tr *ngFor="let share of shares">
+        <td>{{share.symbol}}</td>
+        <td>{{share.companyName}}</td>
+        <td>{{share.numOfShare}}</td>
+        <td>${{share.latestPrice | number: '1.2-2'}}</td>
+        <td>${{share.latestPrice*share.numOfShare | number: '1.2-2'}}</td>
+        <td>
+            <input hidden #check value="{{share.symbol}}" >
+            <button class="btn btn-outline-success" (click)="onCheck(check.value)">Check</button>
+        </td>
+        <td>
+            <input hidden #symbol value="{{share.symbol}}" >
+            <input hidden #sh value="{{share.numOfShare}}" >
+            <button style="width: 70px;" class="btn btn-outline-danger" (click)="onSell(symbol.value, sh.value)">Sell</button>
+        </td>
+    </tr>
+</table>
+
+<ng-template #noSharesBlock>
+    <div class="text-center">
+        <small class="text-danger">You've got no shares.</small>
+    </div>
+    
+</ng-template>
+
+<hr>
+
+
+
+<!-- <a routerLink="/buy" [queryParams]="{'s': share.symbol}" queryParamsHandling="merge"></a> -->
