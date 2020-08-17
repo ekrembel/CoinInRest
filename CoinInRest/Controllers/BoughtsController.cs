@@ -31,17 +31,17 @@ namespace CoinInRest.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public string Get(int id)
         {
             List<Company> companies = db.Companies.OrderBy(c => c.Symbol).ToList();
 
             if (companies != null)
             {
-                return Ok(new { message = "Success"});
+                return "Success";
             }
             else
             {
-                return BadRequest(new { message = "Unable to retrive data from database." });
+                return "Unable to retrive data from database.";
             }
         }
 
