@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoinInRest.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace CoinInRest.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowOrigin")]
     public class UserProfileController : ControllerBase
     {
 
@@ -148,6 +150,7 @@ namespace CoinInRest.Controllers
         [HttpPost]
         [Route("DeleteAccount")]
         [Authorize]
+        
         public async Task<Object> DeleteAccount(UserModel model)
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CoinInRest.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace CoinInRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowOrigin")]
     public class BoughtController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -27,6 +29,7 @@ namespace CoinInRest.Controllers
         }
 
         [HttpGet]
+        
         public ActionResult GetShareDetails()
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;

@@ -15,6 +15,7 @@ namespace CoinInRest
 {
     public class Startup
     {
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +29,16 @@ namespace CoinInRest
             var appSettingsSection = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(appSettingsSection);
 
+            services.AddCors(options =>
+            {
+            options.AddPolicy("AllowOrigin",
+                              builder =>
+                              {
+                                  builder.WithOrigins("http://localhost:4200")
+                                  .AllowAnyMethod()
+                                  .AllowAnyHeader();
+                              });
+            });
 
             services.AddControllers();
 
@@ -49,8 +60,8 @@ namespace CoinInRest
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                //x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x => {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = false;
@@ -84,11 +95,7 @@ namespace CoinInRest
 
 
 
-            app.UseCors(builder =>
-            builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            );
+            app.UseCors();
 
 
 
