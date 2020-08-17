@@ -37,7 +37,7 @@ namespace CoinInRest.Controllers
 
             if (companies != null)
             {
-                return Ok(companies);
+                return Ok(new { message = "Success"});
             }
             else
             {
