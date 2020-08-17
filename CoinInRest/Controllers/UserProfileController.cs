@@ -16,7 +16,7 @@ namespace CoinInRest.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
+    [Authorize]
     public class UserProfileController : ControllerBase
     {
 
@@ -55,7 +55,6 @@ namespace CoinInRest.Controllers
 
         [HttpPost]
         [Route("AddFund")]
-        [Authorize]
         public async Task<Object> AddFund(ApplicationUser model)
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;
@@ -80,7 +79,6 @@ namespace CoinInRest.Controllers
 
         [HttpPost]
         [Route("UpdatePassword")]
-        [Authorize]
         public async Task<Object> UpdatePassword(UserModel model)
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;
@@ -149,8 +147,6 @@ namespace CoinInRest.Controllers
 
         [HttpPost]
         [Route("DeleteAccount")]
-        [Authorize]
-        
         public async Task<Object> DeleteAccount(UserModel model)
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;

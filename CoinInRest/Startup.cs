@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using CoinInRest.Models;
+using CoinInRest.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,6 +63,10 @@ namespace CoinInRest
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            services.AddSwaggerGen(x => {
+                x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{ Title = "Coin", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,14 +88,25 @@ namespace CoinInRest
 
 
 
+            
+
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => {
+                option.RouteTemplate = swaggerOptions.JsonRoute;
+            });
+
+            app.UseSwaggerUI(option => {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+            });
+
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+            builder.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod()
 
             );
-
-
 
             app.UseHttpsRedirection();
 

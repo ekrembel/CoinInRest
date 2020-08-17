@@ -29,6 +29,7 @@ namespace CoinInRest.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult<Bought> GetShareDetails()
         {
             string userId = User.Claims.First(c => c.Type == "Id").Value;

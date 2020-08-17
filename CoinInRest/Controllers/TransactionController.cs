@@ -16,7 +16,6 @@ namespace CoinInRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
     public class TransactionController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
